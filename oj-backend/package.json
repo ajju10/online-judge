@@ -1,0 +1,33 @@
+{
+  "name": "oj-backend",
+  "version": "0.0.1",
+  "author": {
+    "name": "Ajay Yadav"
+  },
+  "repository": {
+    "url": ""
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "bun run --watch src/index.ts",
+    "format": "prettier --check --ignore-path .gitignore .",
+    "format:fix": "prettier --write --ignore-path .gitignore .",
+    "prisma:generate": "bunx prisma generate",
+    "prisma:push": "bunx prisma db push"
+  },
+  "dependencies": {
+    "@chneau/elysia-logger": "^1.0.0",
+    "@elysiajs/cookie": "^0.8.0",
+    "@elysiajs/cors": "^1.1.0",
+    "@elysiajs/jwt": "^1.1.0",
+    "@elysiajs/swagger": "^1.1.0",
+    "prisma": "^5.17.0",
+    "@prisma/client": "^5.17.0",
+    "elysia": "latest"
+  },
+  "devDependencies": {
+    "bun-types": "latest",
+    "prettier": "^3.3.3"
+  },
+  "module": "src/index.js"
+}

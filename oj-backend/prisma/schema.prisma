@@ -1,0 +1,74 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+type ExampleTestCase {
+  input       String
+  output      String
+  explanation String?
+}
+
+type TestCase {
+  srno           Int
+  input          String
+  expectedOutput String
+}
+
+enum Verdict {
+  INITIAL
+  ACCEPTED
+  WRONG_ANSWER
+  COMPILATION_ERROR
+  RUNTIME_ERROR
+}
+
+model User {
+  id           String       @id @default(auto()) @map("_id") @db.ObjectId
+  email        String       @unique
+  username     String       @unique
+  name         String
+  passwordHash String
+  salt         String
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
+  submissions  Submission[]
+}
+
+model Problem {
+  id           String            @id @default(auto()) @map("_id") @db.ObjectId
+  title        String            @unique
+  code         String            @unique
+  description  String
+  difficulty   String
+  inputFormat  String
+  outputFormat String
+  constraints  String?
+  examples     ExampleTestCase[]
+  testCases    TestCase[]
+  createdAt    DateTime          @default(now())
+  updatedAt    DateTime          @updatedAt
+  submissions  Submission[]
+}
+
+model Submission {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  problemId   String   @db.ObjectId
+  userId      String   @db.ObjectId
+  language    String
+  sourceCode  String
+  verdict     Verdict
+  submittedAt DateTime @default(now())
+  problem     Problem  @relation(fields: [problemId], references: [id])
+  submittedBy User     @relation(fields: [userId], references: [id])
+}
