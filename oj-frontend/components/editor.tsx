@@ -14,11 +14,12 @@ type MonacoType = typeof import("monaco-editor");
 
 export default function CodeEditor({ isLoggedIn, code }: { isLoggedIn: boolean; code: string }) {
   const editorRef = useRef<EditorType | null>(null);
+  const [isRunning, setIsRunning] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [value, setValue] = useState("");
   const [language, _setLanguage] = useState("cpp");
   const [input, setInput] = useState("");
   const [output, setOutput] = useState("");
-  const [verdict, setVerdict] = useState("");
 
   const handleEditorDidMount = (editor: EditorType, _: MonacoType) => {
     editorRef.current = editor;
@@ -26,6 +27,7 @@ export default function CodeEditor({ isLoggedIn, code }: { isLoggedIn: boolean; 
 
   async function handleRun() {
     setOutput("");
+    setIsRunning(true);
     const payload: RunRequestPayload = {
       lang: language,
       source_code: value,
@@ -36,26 +38,27 @@ export default function CodeEditor({ isLoggedIn, code }: { isLoggedIn: boolean; 
       if (response.data.status === "Executed") {
         setOutput(response.data.stdout);
       } else if (response.data.status === "CompilerError") {
-        alert(response.data.compiler_err);
+        setOutput(response.data.compiler_err);
       } else {
-        alert(response.data.stderr);
+        setOutput(response.data.stderr);
       }
     } else {
-      alert(response.message);
+      setOutput(response.message);
     }
+    setIsRunning(false);
   }
 
   async function handleSubmit() {
     setOutput("");
+    setIsSubmitting(true);
     const payload: SubmitRequestPayload = { lang: language, source_code: value };
     const response = await submitCode(payload, code);
     if (response.success) {
-      alert(response.data.verdict);
       setOutput(response.data.verdict);
-      setVerdict(response.data.verdict);
     } else {
-      alert(response.message);
+      setOutput(response.message);
     }
+    setIsSubmitting(false);
   }
 
   return (
@@ -95,10 +98,10 @@ export default function CodeEditor({ isLoggedIn, code }: { isLoggedIn: boolean; 
           </div>
           <div className="flex justify-end gap-2">
             <Button variant="secondary" onClick={handleRun} disabled={!isLoggedIn}>
-              Run
+              {isRunning ? "Running..." : "Run"}
             </Button>
             <Button onClick={handleSubmit} disabled={!isLoggedIn}>
-              Submit
+              {isSubmitting ? "Submitting..." : "Submit"}
             </Button>
           </div>
         </div>

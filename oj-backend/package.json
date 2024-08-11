@@ -1,11 +1,12 @@
 {
   "name": "oj-backend",
   "version": "0.0.1",
+  "private": true,
   "author": {
     "name": "Ajay Yadav"
   },
   "repository": {
-    "url": ""
+    "url": "https://github.com/ajju10/online-judge/tree/main/oj-backend"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",

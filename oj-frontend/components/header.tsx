@@ -1,12 +1,13 @@
 import Link from "next/link";
 import { buttonVariants } from "@/components/ui/button";
 import { getUserProfile } from "@/lib/serverUtils";
+import { TooltipContent, Tooltip, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 
 async function UserStatus() {
   const userData = await getUserProfile();
   if (userData.data === null) {
     return (
-      <Link href="/signin" className={buttonVariants({ variant: "default" })}>
+      <Link href="/signin" prefetch={false} className={buttonVariants({ variant: "default" })}>
         Sign In
       </Link>
     );
@@ -25,23 +26,42 @@ export default function Header() {
           <Link
             href="/problemset"
             className="text-muted-foreground hover:text-primary transition-colors"
+            prefetch={false}
           >
             Problems
           </Link>
-          <Link
-            href="#"
-            className="text-muted-foreground hover:text-primary transition-colors"
-            prefetch={false}
-          >
-            Leaderboard
-          </Link>
-          <Link
-            href="#"
-            className="text-muted-foreground hover:text-primary transition-colors"
-            prefetch={false}
-          >
-            Profile
-          </Link>
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Link
+                  href="#"
+                  className="text-muted-foreground hover:text-primary transition-colors"
+                  prefetch={false}
+                >
+                  Leaderboard
+                </Link>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>Coming Soon</p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Link
+                  href="#"
+                  className="text-muted-foreground hover:text-primary transition-colors"
+                  prefetch={false}
+                >
+                  Profile
+                </Link>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>Coming Soon</p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
         </nav>
         <UserStatus />
       </div>

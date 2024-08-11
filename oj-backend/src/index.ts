@@ -315,6 +315,7 @@ const app = new Elysia()
               body: JSON.stringify(data),
             });
             if (!response.ok) {
+              console.log("Response code:", response.status, response.statusText);
               set.status = response.status;
               return {
                 success: false,
@@ -366,6 +367,7 @@ const app = new Elysia()
                 message: "Solution submitted successfully",
               };
             } catch (error: any) {
+              console.log("Line 370:", error);
               set.status = 400;
               return {
                 success: false,
@@ -374,6 +376,7 @@ const app = new Elysia()
               };
             }
           } catch (error: any) {
+            console.log("Line 379", error);
             set.status = 400;
             return {
               success: false,

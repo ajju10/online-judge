@@ -1,6 +1,6 @@
 export const pollTaskStatus = async (taskId: string): Promise<any> => {
   const url = Bun.env.CODE_ENGINE_SERVER! + `/task/${taskId}`;
-  const pollInterval = 1000; // Poll every second
+  const pollInterval = 3000; // Poll every 3 second
   const maxAttempts = 10;
   let attempts = 0;
 

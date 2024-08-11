@@ -159,6 +159,7 @@ export async function submitCode(data: SubmitRequestPayload, problemCode: string
     });
     return await response.json();
   } catch (error: any) {
+    console.log("Error in line 162", error);
     return {
       success: false,
       data: null,

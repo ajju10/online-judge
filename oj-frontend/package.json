@@ -1,7 +1,13 @@
 {
   "name": "oj-frontend",
-  "version": "0.1.0",
+  "version": "0.0.1",
   "private": true,
+  "author": {
+    "name": "Ajay Yadav"
+  },
+  "repository": {
+    "url": "https://github.com/ajju10/online-judge/tree/main/oj-frontend"
+  },
   "scripts": {
     "dev": "next dev --turbo",
     "build": "next build",
@@ -14,8 +20,10 @@
     "@monaco-editor/react": "^4.6.0",
     "@radix-ui/react-checkbox": "^1.1.1",
     "@radix-ui/react-label": "^2.1.0",
+    "@radix-ui/react-progress": "^1.1.0",
     "@radix-ui/react-slot": "^1.1.0",
     "@radix-ui/react-tabs": "^1.1.0",
+    "@radix-ui/react-tooltip": "^1.1.2",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "lucide-react": "^0.419.0",
