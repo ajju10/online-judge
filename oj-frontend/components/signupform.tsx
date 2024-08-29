@@ -84,6 +84,7 @@ export default function SignUpForm() {
             </div>
             <div className="space-y-2">
               <ApiErrors error={formState?.apiErrors} />
+              <ApiErrors error={formState?.message} />
             </div>
           </form>
         </div>

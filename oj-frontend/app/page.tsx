@@ -3,7 +3,6 @@ import Link from "next/link";
 
 export default function Home() {
   return (
-    // <main className="flex-1">
     <>
       <section className="bg-gradient-to-r from-primary to-primary-foreground py-24 text-primary-foreground">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -46,6 +45,5 @@ export default function Home() {
         </div>
       </section>
     </>
-    // </main>
   );
 }
