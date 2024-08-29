@@ -5,9 +5,9 @@ import { redirect } from "next/navigation";
 import { signInUser, signupUser } from "@/lib/service";
 import { cookies } from "next/headers";
 import { RunRequestPayload, SubmitRequestPayload } from "@/lib/definitions";
-import { unstable_noStore as noStore } from "next/dist/server/web/spec-extension/unstable-no-store";
+import { unstable_noStore as noStore } from "next/cache";
 import { getBaseURL } from "@/lib/utils";
-import { getAuthToken } from "@/lib/serverUtils";
+import { getAuthToken, removeAuthToken } from "@/lib/serverUtils";
 
 const baseUrl = getBaseURL();
 
@@ -34,7 +34,7 @@ const signupSchema = z.object({
 });
 
 const cookieConfig = {
-  maxAge: 60 * 60 * 24 * 7, // 1 week
+  maxAge: 60 * 60 * 24 * 7, //1 week
   path: "/",
   domain: process.env.HOST ?? "localhost",
   httpOnly: true,
@@ -54,7 +54,7 @@ export async function signupUserAction(prevState: any, formData: FormData) {
       ...prevState,
       zodErrors: validatedFields.error.flatten().fieldErrors,
       apiErrors: null,
-      message: "Please provide valid data",
+      message: null,
     };
   }
 
@@ -74,7 +74,7 @@ export async function signupUserAction(prevState: any, formData: FormData) {
       ...prevState,
       zodErrors: null,
       apiErrors: jsonData.message,
-      message: "Failed to register user, please try again.",
+      message: null,
     };
   }
 
@@ -93,17 +93,24 @@ export async function signInUserAction(prevState: any, formData: FormData) {
       ...prevState,
       zodErrors: validatedFields.error.flatten().fieldErrors,
       apiErrors: null,
-      message: "Incorrect email or password, cannot login",
+      message: null,
     };
   }
 
   let response = await signInUser(validatedFields.data);
-  if (!response.ok) {
+  if (response.status === 401) {
     return {
       ...prevState,
       zodErrors: null,
       apiErrors: null,
-      message: "Something went wrong, please try again.",
+      message: "Incorrect password, could not authenticate",
+    };
+  } else if (!response.ok) {
+    return {
+      ...prevState,
+      zodErrors: null,
+      apiErrors: null,
+      message: "Something went wrong, please try again,",
     };
   }
 
@@ -118,6 +125,11 @@ export async function signInUserAction(prevState: any, formData: FormData) {
   }
 
   cookies().set("authcookie", jsonData.data, cookieConfig);
+  redirect("/");
+}
+
+export async function signOutUserAction() {
+  removeAuthToken();
   redirect("/");
 }
 
@@ -159,7 +171,6 @@ export async function submitCode(data: SubmitRequestPayload, problemCode: string
     });
     return await response.json();
   } catch (error: any) {
-    console.log("Error in line 162", error);
     return {
       success: false,
       data: null,

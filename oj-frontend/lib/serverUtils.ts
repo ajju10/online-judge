@@ -19,7 +19,6 @@ export async function getUserProfile() {
       message: "No authentication token found, please login again",
     };
   }
-
   const baseUrl = getBaseURL();
   const url = new URL("/api/v1/user/me", baseUrl);
   try {
@@ -32,7 +31,6 @@ export async function getUserProfile() {
     });
     return await response.json();
   } catch (error) {
-    console.error(error);
     return {
       data: null,
       message: error,

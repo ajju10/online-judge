@@ -1,6 +1,5 @@
 import { unstable_noStore as noStore } from "next/cache";
 import { getBaseURL } from "@/lib/utils";
-import { RunRequestPayload, SubmitRequestPayload } from "@/lib/definitions";
 
 interface SignupUserProps {
   username: string;

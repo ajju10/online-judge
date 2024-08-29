@@ -1,7 +1,8 @@
 import Link from "next/link";
-import { buttonVariants } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { getUserProfile } from "@/lib/serverUtils";
 import { TooltipContent, Tooltip, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { SignOutDialog } from "@/components/signout-dialog";
 
 async function UserStatus() {
   const userData = await getUserProfile();
@@ -12,7 +13,13 @@ async function UserStatus() {
       </Link>
     );
   }
-  return <strong>{userData.data.username}</strong>;
+
+  return (
+    <div className="grid grid-cols-2">
+      <Button variant="link">{userData.data.username}</Button>
+      <SignOutDialog />
+    </div>
+  );
 }
 
 export default function Header() {
